@@ -1,27 +1,24 @@
-# JS Central
-> Personal portfolio and engineering journal by JS, focused on embedded systems, firmware, frontend engineering, and practical security research.
+# JS Central — Public Archive
+> A static, manually maintained archive of publicly available content from https://jscentral.org/.
 
 ## About
-JS Central documents projects that connect physical hardware, software, servers, and accessible web interfaces. The site is maintained by JS.
+This repository preserves the public pages and browser-side experiments of JS Central. It is not the live site, is not synchronized automatically, and may be incomplete or out of date.
 
-## Core topics
-- Embedded systems and physical computing
-- Raspberry Pi, Arduino, and ESP32 projects
-- Firmware development and debugging
-- HTML, CSS, and JavaScript frontend engineering
-- Accessible web interfaces
-- Application and systems security fundamentals
-- Browser experiments and interactive prototypes
+## Pages
+- Archived homepage: ./index.html
+- Browser experiments: ./lab.html
+- Embedded-systems guide: ./embedded-guide.html
+- Engineering journal: ./journal.html
+- Seasonal page: ./seasonal.html
+- Archive legal notice: ./legal.html
 
-## Public pages
-- Homepage: https://jscentral.org/
-- Lab: https://jscentral.org/lab.html
-- Journal: https://jscentral.org/journal.html
-- Seasonal page: https://jscentral.org/seasonal.html
-- Legal and privacy policy: https://jscentral.org/legal.html
+## Privacy and external services
+The archive does not include advertising scripts or analytics. Theme preference and embedded-guide notes remain in the visitor's browser. Google Fonts and the optional YouTube player are external services and may receive technical request information when used. Hosting providers may process request information to operate the archive.
 
-## Source and contact
-The site is a static website delivered through Cloudflare. For project, collaboration, privacy, accessibility, copyright, or legal questions, contact [removed].
+## Source and corrections
+- Live site: https://jscentral.org/
+- Repository: https://github.com/PixelPilotPrograms/Public-Archive-Jscentral
+- Correction/removal requests can be opened as public repository issues. Do not post confidential or sensitive information there.
 
-## Content notes
-Technical examples are educational and may require testing or adaptation. Security content is intended for authorized systems only. Advertising and Cloudflare delivery/statistics disclosures are available on the legal page.
+## Content
+Technical material is provided for general reference and education without warranty. See ./legal.html for terms, accessibility, privacy, and copyright details.

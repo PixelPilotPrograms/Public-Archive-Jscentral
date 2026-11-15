@@ -211,20 +211,6 @@ function initShareAction() {
   });
 }
 
-function initPrivacyNotice() {
-  if (document.querySelector('.legal-page') || document.querySelector('.not-found') || window.location.pathname.includes('/archive/') || localStorage.getItem('privacy-notice-seen') === 'true') return;
-  localStorage.setItem('privacy-notice-seen', 'true');
-  const notice = document.createElement('aside');
-  notice.className = 'privacy-notice';
-  notice.setAttribute('role', 'alertdialog');
-  notice.setAttribute('aria-labelledby', 'privacy-notice-title');
-  notice.innerHTML = '<div><p class="eyebrow">A small site update</p><h2 id="privacy-notice-title">The rules got clearer.</h2><p>JS Central uses Google AdSense and Cloudflare delivery, security, and aggregate traffic statistics. Embedded-guide records stay in your browser profile and are not sent to a server.</p><a href="legal.html#privacy">Read the privacy policy <span aria-hidden="true">↗</span></a></div><button type="button" aria-label="Dismiss privacy update">Close</button>';
-  const close = notice.querySelector('button');
-  close.addEventListener('click', () => notice.remove());
-  document.body.append(notice);
-  close.focus();
-}
-
 function initGuideRecords() {
   const root = document.querySelector('[data-guide-records]');
   if (!root) return;
@@ -462,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSeasonalExperience();
   initGuideRecords();
   initShareAction();
-  initPrivacyNotice();
   scheduleSeasonalRefresh();
   const toggle = document.getElementById('theme-toggle');
   const icon = document.getElementById('theme-icon');
