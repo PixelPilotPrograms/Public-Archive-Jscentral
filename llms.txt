@@ -1,0 +1,27 @@
+# JS Central
+> Personal portfolio and engineering journal by JS, focused on embedded systems, firmware, frontend engineering, and practical security research.
+
+## About
+JS Central documents projects that connect physical hardware, software, servers, and accessible web interfaces. The site is maintained by JS.
+
+## Core topics
+- Embedded systems and physical computing
+- Raspberry Pi, Arduino, and ESP32 projects
+- Firmware development and debugging
+- HTML, CSS, and JavaScript frontend engineering
+- Accessible web interfaces
+- Application and systems security fundamentals
+- Browser experiments and interactive prototypes
+
+## Public pages
+- Homepage: https://jscentral.org/
+- Lab: https://jscentral.org/lab.html
+- Journal: https://jscentral.org/journal.html
+- Seasonal page: https://jscentral.org/seasonal.html
+- Legal and privacy policy: https://jscentral.org/legal.html
+
+## Source and contact
+The site is a static website delivered through Cloudflare. For project, collaboration, privacy, accessibility, copyright, or legal questions, contact [removed].
+
+## Content notes
+Technical examples are educational and may require testing or adaptation. Security content is intended for authorized systems only. Advertising and Cloudflare delivery/statistics disclosures are available on the legal page.

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical, safety-conscious workflow for diagnosing power, wiring, serial, and I2C problems on low-voltage development boards.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://jscentral.org/embedded-guide.html">
+  <title>Embedded Systems Debugging Field Guide | JS Central</title>
+  <link rel="icon" type="image/jpeg" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261005-fieldguide">
+</head>
+<body>
+  <div class="site-shell">
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="wordmark" href="index.html" aria-label="JS home"><span>J</span>S<span class="wordmark-dot">.</span></a>
+      <div class="nav-links">
+        <a href="index.html#work">Work</a>
+        <a href="lab.html">Lab</a>
+        <a href="journal.html">Journal</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme"><span class="theme-icon" id="theme-icon" aria-hidden="true">◐</span></button>
+    </nav>
+
+    <main class="field-guide-page">
+      <section class="page-intro field-guide-intro" aria-labelledby="guide-title">
+        <p class="eyebrow">Field guide / Embedded systems</p>
+        <h1 id="guide-title">Find the fault.<br><em>One test at a time.</em></h1>
+        <p>A repeatable first-pass workflow for low-voltage development boards and peripherals. Start with what you can observe, make the setup smaller, and change one variable per test.</p>
+        <p class="guide-scope"><strong>Scope and safety:</strong> Follow the board and component datasheets. Disconnect power before rewiring. Never assume a GPIO pin tolerates 5 V. Do not probe mains-powered equipment or any circuit you are not qualified to test.</p>
+        <a class="back-link" href="index.html">Back to JS Central <span aria-hidden="true">↗</span></a>
+      </section>
+
+      <div class="field-guide-grid">
+        <nav class="field-guide-nav" aria-label="On this page">
+          <a href="#reproduce">Describe the failure</a>
+          <a href="#power-and-wiring">Power and wiring</a>
+          <a href="#minimum-test">Reduce the setup</a>
+          <a href="#communication">Serial and I2C</a>
+          <a href="#triage">Symptom triage</a>
+          <a href="#test-record">Test record</a>
+          <a href="#references">References</a>
+        </nav>
+
+        <article class="field-guide-content">
+          <section class="guide-section" id="reproduce" aria-labelledby="reproduce-title">
+            <p class="eyebrow">01 / Establish a baseline</p>
+            <h2 id="reproduce-title">Describe the failure before changing anything.</h2>
+            <p>Write down what you expected, what happened instead, and the smallest sequence that reproduces it. Record when it fails: at startup, after a delay, under load, or only after another device connects. Note the board model and revision, firmware version, supply, and connected peripherals.</p>
+            <p>A precise symptom is more useful than a theory. “The board resets when the motor starts” gives you a testable event; “the code is broken” does not.</p>
+          </section>
+
+          <section class="guide-section" id="power-and-wiring" aria-labelledby="power-title">
+            <p class="eyebrow">02 / Verify the physical layer</p>
+            <h2 id="power-title">Check power and wiring first.</h2>
+            <ol>
+              <li>Identify the board's allowed input range and each peripheral's supply and logic-voltage limits from their documentation.</li>
+              <li>With power disconnected, inspect connector orientation, polarity, loose wires, and whether signal and ground pins match the board's pinout.</li>
+              <li>Check that the power source and regulator can supply the combined load. A peripheral that starts drawing current can expose a weak supply even when the board works by itself.</li>
+              <li>Use a meter only when you know the correct mode, range, and measurement points. Do not use resistance or continuity mode on a powered circuit.</li>
+            </ol>
+            <p>Some boards use 3.3 V GPIO and are not 5 V tolerant. A peripheral's supply voltage and its signal voltage are separate specifications; verify both before connecting pins.</p>
+          </section>
+
+          <section class="guide-section" id="minimum-test" aria-labelledby="minimum-title">
+            <p class="eyebrow">03 / Reduce variables</p>
+            <h2 id="minimum-title">Build the smallest test that can fail.</h2>
+            <p>Disconnect unrelated peripherals and use a minimal program that demonstrates the problem. Keep only the board, the necessary connection, and the one behavior under test. If the failure disappears, add parts or code back individually until it returns.</p>
+            <p>Change one thing between runs and record the result. Replacing a cable, changing a pin, updating firmware, and changing the power source together may make the fault disappear, but it will not tell you why.</p>
+          </section>
+
+          <section class="guide-section" id="communication" aria-labelledby="communication-title">
+            <p class="eyebrow">04 / Make state visible</p>
+            <h2 id="communication-title">Use logs and bus checks deliberately.</h2>
+            <h3>Serial output</h3>
+            <ul>
+              <li>Confirm the selected device port and the baud rate expected by the firmware.</li>
+              <li>Use a USB cable that supports data, not charging only, and check the board's boot or programming mode.</li>
+              <li>Log startup and meaningful state changes. Short messages around the point of failure are easier to interpret than continuous output.</li>
+            </ul>
+            <h3>I2C devices</h3>
+            <ul>
+              <li>Confirm shared ground, correct SDA/SCL pins, device power, and the bus logic voltage.</li>
+              <li>Check that pull-ups are present where required and connect to a voltage safe for every device on the bus.</li>
+              <li>Verify the address format expected by the library. Documentation and tools do not always present addresses in the same notation.</li>
+            </ul>
+            <p>A scan that finds no device is a clue, not a complete diagnosis. It cannot tell you by itself whether the cause is power, wiring, voltage, pin mapping, or an address mismatch.</p>
+          </section>
+
+          <section class="guide-section" id="triage" aria-labelledby="triage-title">
+            <p class="eyebrow">05 / Choose the next check</p>
+            <h2 id="triage-title">Use the symptom to narrow the test.</h2>
+            <div class="guide-table-wrap">
+              <table class="guide-table">
+                <thead><tr><th scope="col">What you observe</th><th scope="col">Useful next checks</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Board resets when a motor or radio starts</th><td>Check supply capacity, regulator limits, wiring, and ground return. Measure only at documented low-voltage points with suitable equipment.</td></tr>
+                  <tr><th scope="row">No serial output</th><td>Check board power, data-capable cable, selected port, baud rate, and boot mode. Try a minimal known-good serial example.</td></tr>
+                  <tr><th scope="row">I2C device does not respond</th><td>Check shared ground, supply and bus voltage, SDA/SCL mapping, pull-ups, and the address notation used by the library.</td></tr>
+                  <tr><th scope="row">Works alone, fails when assembled</th><td>Reconnect one peripheral at a time. Look for pin conflicts, load on the supply, startup order, and interactions between tasks.</td></tr>
+                  <tr><th scope="row">Fails only after running for a while</th><td>Record how long it takes and what changes over time. Check connector stability, temperature within component limits, repeated allocations, and watchdog or timeout logs.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>These are starting points, not diagnoses. Confirm a suspected cause with a controlled test and the limits in the relevant component documentation.</p>
+          </section>
+
+          <section class="guide-section" id="test-record" aria-labelledby="record-title">
+            <p class="eyebrow">06 / Keep a useful record</p>
+            <h2 id="record-title">Make the next attempt easier.</h2>
+            <p>Records are saved in this browser profile and are not sent to a server. Anyone with access to this browser profile can read or change them; see the <a href="legal.html#guide-records">privacy policy</a>. Do not include secrets or sensitive personal information.</p>
+            <div class="guide-records" data-guide-records>
+              <form class="guide-record-form" data-record-form>
+                <input type="hidden" name="recordId">
+                <label>Board and revision<input name="board" data-record-field maxlength="120" autocomplete="off"></label>
+                <label>Firmware version or commit<input name="firmware" data-record-field maxlength="120" autocomplete="off"></label>
+                <label>Supply and connected devices<textarea name="supply" data-record-field maxlength="240" rows="2"></textarea></label>
+                <label>Expected behavior<textarea name="expected" data-record-field maxlength="1000" rows="3"></textarea></label>
+                <label>Observed behavior<textarea name="observed" data-record-field maxlength="1000" rows="3"></textarea></label>
+                <label>Steps to reproduce<textarea name="steps" data-record-field maxlength="1600" rows="4"></textarea></label>
+                <label>One change made<textarea name="change" data-record-field maxlength="1000" rows="3"></textarea></label>
+                <label>Result<textarea name="result" data-record-field maxlength="1000" rows="3"></textarea></label>
+                <label>Next test<textarea name="next" data-record-field maxlength="1000" rows="3"></textarea></label>
+                <div class="guide-record-actions">
+                  <button class="button button-primary" type="submit" data-record-submit>Save record</button>
+                  <button class="record-secondary-action" type="button" data-record-new>New record</button>
+                  <p class="guide-record-status" data-record-status role="status" aria-live="polite">Saved records stay in this browser.</p>
+                </div>
+              </form>
+              <div class="guide-record-list" data-record-list aria-label="Saved test records"></div>
+            </div>
+            <p>Stop and disconnect power if a component becomes unexpectedly hot, smells, swells, or behaves outside its documented limits. Do not continue testing a damaged or unstable circuit.</p>
+          </section>
+
+          <section class="guide-section" id="references" aria-labelledby="references-title">
+            <p class="eyebrow">References / Manufacturer documentation</p>
+            <h2 id="references-title">Check the source for your exact hardware.</h2>
+            <p>Board revisions and peripheral modules can differ. Use the manufacturer's documentation for pinouts, voltage limits, bus behavior, and tool setup:</p>
+            <ul>
+              <li><a href="https://docs.arduino.cc/">Arduino documentation</a></li>
+              <li><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/">Espressif ESP-IDF programming guide</a></li>
+              <li><a href="https://github.com/raspberrypi/documentation">Raspberry Pi documentation source</a></li>
+            </ul>
+            <p>For notes on the JavaScript experiments on this site, continue to the <a href="journal.html#implementation-notes-title">implementation journal</a> or try the <a href="lab.html">browser lab</a>.</p>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div><p class="footer-kicker">Keep learning</p><a class="footer-email" href="journal.html">Read the Journal <span aria-hidden="true">↗</span></a></div>
+      <div class="footer-meta"><span>JS / Field Guide</span><span><a href="index.html">Home</a> / <a href="lab.html">Lab</a></span></div>
+    </footer>
+  </div>
+  <script src="script.js?v=20260926-xmas" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=[removed]" crossorigin="anonymous"></script>
+</body>
+</html>

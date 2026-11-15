@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Practical browser implementation notes and a repeatable embedded-systems debugging guide from JS Central.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://jscentral.org/journal.html">
+  <title>JS Central Journal | Notes on systems and interfaces</title>
+  <link rel="icon" type="image/jpeg" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261005-fieldguide">
+</head>
+<body>
+  <div class="site-shell">
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="wordmark" href="index.html" aria-label="JS home"><span>J</span>S<span class="wordmark-dot">.</span></a>
+      <div class="nav-links">
+        <a href="index.html#work">Work</a>
+        <a href="embedded-guide.html">Field Guide</a>
+        <a href="lab.html">Lab</a>
+        <a href="journal.html" aria-current="page">Journal</a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme">
+        <span class="theme-icon" id="theme-icon" aria-hidden="true">◐</span>
+      </button>
+    </nav>
+
+    <main>
+      <section class="page-intro">
+        <p class="eyebrow">Journal / Site Updates</p>
+        <h1>Notes from<br><em>the work.</em></h1>
+        <p>Practical notes from building this site: how small browser interactions work, how they are tested, and what changed along the way.</p>
+        <a class="back-link" href="index.html">Back to the main index <span aria-hidden="true">↗</span></a>
+      </section>
+
+      <section aria-labelledby="implementation-notes-title">
+        <div class="section-heading journal-heading"><p class="eyebrow">From the browser workbench</p><h2 id="implementation-notes-title">Implementation <em>notes</em></h2><p class="section-note">Three small patterns used in the interactive lab, with practical checks and limitations.</p></div>
+        <div class="journal-list">
+          <article class="journal-entry journal-note">
+            <span class="journal-date">Browser / Color</span>
+            <div>
+              <h2>Turning HSL controls into a HEX color</h2>
+              <p>The color mixer keeps hue, saturation, and lightness as the editable values. CSS can render that HSL value directly; the HEX readout is calculated separately so it can be copied into tools that expect RGB notation.</p>
+              <div class="journal-note-detail">
+                <h3>Conversion in three steps</h3>
+                <p>Normalize saturation and lightness to 0–1. Chroma describes the distance from gray, and the hue selects one of six 60-degree RGB sectors. Add the lightness offset, round each channel to an 8-bit value, then pad each hexadecimal channel to two digits.</p>
+                <pre><code>chroma = (1 - abs(2 * lightness - 1)) * saturation
+sector = hue / 60
+second = chroma * (1 - abs(sector % 2 - 1))</code></pre>
+                <p>For a visual check, drag hue through the full 0–360 range, set saturation to 0 to confirm the result becomes gray, and set lightness to 0 or 100 to confirm black or white. Those boundary cases catch common conversion mistakes.</p>
+              </div>
+            </div>
+            <span class="journal-type">Color / JavaScript</span>
+          </article>
+
+          <article class="journal-entry journal-note">
+            <span class="journal-date">Browser / Motion</span>
+            <div>
+              <h2>Restarting a CSS animation on demand</h2>
+              <p>The oscilloscope experiment increments a pulse counter and retriggers a CSS keyframe animation on every click. Adding a class that is already present does not restart its animation, so the handler removes the class, reads the element's layout, and adds the class back.</p>
+              <div class="journal-note-detail">
+                <h3>The retrigger pattern</h3>
+                <pre><code>pulseLine.classList.remove('active');
+void pulseLine.offsetWidth;
+pulseLine.classList.add('active');</code></pre>
+                <p>Reading <code>offsetWidth</code> forces the browser to resolve layout between the class changes. That gives CSS a distinct inactive state before the animation starts again. It is a small, targeted reflow; avoid putting repeated layout reads inside a large loop, where they can make rendering expensive.</p>
+                <p>The animation itself changes transform and opacity, which browsers can generally animate smoothly. The counter is updated as text, so it remains available to assistive technology instead of being drawn into the visual effect.</p>
+              </div>
+            </div>
+            <span class="journal-type">CSS / Interaction</span>
+          </article>
+
+          <article class="journal-entry journal-note">
+            <span class="journal-date">Browser / Timing</span>
+            <div>
+              <h2>Modeling a reaction test as explicit states</h2>
+              <p>The reaction timer has four states: ready, waiting, go, and result. A click starts a randomized delay; an early click cancels the timer, while a click after the signal measures elapsed time and updates the best result for the current page view.</p>
+              <div class="journal-note-detail">
+                <h3>Why use a monotonic clock?</h3>
+                <p><code>performance.now()</code> measures elapsed time relative to the page's time origin, so a system clock adjustment does not distort the result. The delay is 1,200–3,400 milliseconds; the measurement begins only when the signal appears.</p>
+                <pre><code>reactionStart = performance.now();
+const elapsed = Math.round(performance.now() - reactionStart);</code></pre>
+                <p>This is a casual browser exercise, not a scientific measurement. Display refresh, input hardware, browser scheduling, and device load all affect the result. Keeping the state explicit makes early clicks and retries predictable, but a production test would also need accessible status announcements and more careful input handling.</p>
+              </div>
+            </div>
+            <span class="journal-type">JavaScript / Timing</span>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="site-updates-title">
+        <div class="section-heading journal-heading"><p class="eyebrow">Site history</p><h2 id="site-updates-title">Recent <em>updates</em></h2><p class="section-note">A dated record of changes to the site and its infrastructure.</p></div>
+      <section class="journal-list">
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 10 / 14</span>
+          <div>
+            <h2>Private test records, stored in the browser</h2>
+            <p>Added create, edit, load, and delete controls to the embedded-systems field guide. Records use IndexedDB in the current browser profile, with field validation and a per-profile limit; the feature has no account or server component, and saved notes are not sent to JS Central.</p>
+          </div>
+          <span class="journal-type">Field guide / Browser storage</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 10 / 05</span>
+          <div>
+            <h2><a href="embedded-guide.html">A field guide for debugging embedded systems</a></h2>
+            <p>Published a standalone first-pass workflow for low-voltage development boards. It covers reproducing a fault, checking power and logic levels, reducing variables, troubleshooting serial and I2C connections, and recording test results, with safety boundaries and manufacturer references.</p>
+          </div>
+          <span class="journal-type">Field guide</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 09 / 26</span>
+          <div>
+            <h2>A Christmas countdown, right on time</h2>
+            <p>Added a live countdown to Christmas above the seasonal soundtrack, with days, hours, minutes, and seconds ticking toward December 25. Christmas mode now arrives early for the rest of 2026, skipping Halloween this year; the page carries evergreen, cranberry, and gold details throughout, adapts to smaller screens and dark mode, and switches to a Christmas Day greeting.</p>
+          </div>
+          <span class="journal-type">Seasonal</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 09 / 22</span>
+          <div>
+            <h2>Local assets, edge delivery</h2>
+            <p>Kept images, styles, and scripts on the JS Central origin while configuring Cloudflare to cache those local assets at its edge. HTML, XML, and privacy updates remain revalidated so changes can travel quickly without giving up CDN delivery.</p>
+          </div>
+          <span class="journal-type">Infrastructure</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 09 / 19</span>
+          <div>
+            <h2>Seasonal signals & a soundtrack</h2>
+            <p>Added automatic Christmas, Halloween, Easter, and Summer modes, with small interface changes that arrive on their calendar. The seasonal page now includes the three Summer playlists through a keyless YouTube embed, plus direct YouTube Music links when the player needs a little help.</p>
+          </div>
+          <span class="journal-type">Seasonal</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 09 / 17</span>
+          <div>
+            <h2>Refining the site architecture & lab experiments</h2>
+            <p>Overhauled the hero section, updated project descriptions across the site, introduced interactive lab experiments, and finalized legal warning text in legal.html.</p>
+          </div>
+          <span class="journal-type">Update</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 09 / 17</span>
+          <div>
+            <h2>Legal compliance & privacy terms</h2>
+            <p>Established a centralized privacy terms center, integrated legal modals, and restructured warning flows across all pages.</p>
+          </div>
+          <span class="journal-type">Changelog</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 09 / 16</span>
+          <div>
+            <h2>Edge routing & custom error handling</h2>
+            <p>Updated Wrangler configuration for Cloudflare Workers deployments and refined fallback handling across custom 404 views.</p>
+          </div>
+          <span class="journal-type">Infrastructure</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 09 / 15</span>
+          <div>
+            <h2>Transitioning from landing page to full suite</h2>
+            <p>Evolved the site from a "Coming Soon" splash page into a complete multi-page architecture with privacy modals and streamlined footer navigation.</p>
+          </div>
+          <span class="journal-type">Release</span>
+        </article>
+
+        <article class="journal-entry">
+          <span class="journal-date">2026 / 09 / 13</span>
+          <div>
+            <h2>SEO, monetization & brand identity refresh</h2>
+            <p>Overhauled visual assets with high-res logomarks, added XML sitemaps, configured AdSense/Funding Choices compliance, and restructured system skills showcase.</p>
+          </div>
+          <span class="journal-type">Branding</span>
+        </article>
+      </section>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        <p class="footer-kicker">Keep exploring</p>
+        <a class="footer-email" href="lab.html">Open the Lab <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="footer-meta">
+        <span>JS / Journal</span>
+        <span><a href="index.html">Home</a> / <a href="lab.html">Lab</a></span>
+      </div>
+    </footer>
+  </div>
+  <script src="script.js?v=20260926-xmas" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=[removed]" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Small interactive experiments from JS.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://jscentral.org/lab.html">
+  <title>JS Central Lab | Interactive web experiments</title>
+  <link rel="icon" type="image/jpeg" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261005-fieldguide">
+</head>
+<body>
+  <div class="site-shell">
+    <nav class="site-nav" aria-label="Primary navigation"><a class="wordmark" href="index.html" aria-label="JS home"><span>J</span>S<span class="wordmark-dot">.</span></a><div class="nav-links"><a href="index.html#work">Work</a><a href="embedded-guide.html">Field guide</a><a href="lab.html" aria-current="page">Lab</a><a href="journal.html">Journal</a></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme"><span class="theme-icon" id="theme-icon" aria-hidden="true">◐</span></button></nav>
+
+    <main>
+      <section class="page-intro"><p class="eyebrow">Lab / Open bench</p><h1>Small signals,<br><em>big feeling.</em></h1><p>Three client-side experiments: replay a CSS animation, convert HSL slider values to HEX, and measure a randomized reaction test. They have no account or data-submission feature; hosting and advertising services may still process technical or ad-related data described in the <a href="legal.html#privacy">privacy policy</a>. Read the <a href="journal.html#implementation-notes-title">implementation notes</a> for the code and limitations, or use the <a href="embedded-guide.html">embedded-systems field guide</a>.</p><a class="back-link" href="index.html">Back to the main index <span aria-hidden="true">↗</span></a></section>
+
+      <section class="lab-launchpad" data-lab-launchpad aria-labelledby="launchpad-title"><div class="launchpad-copy"><p class="eyebrow">Try this first</p><h2 id="launchpad-title">Click<br><em>something.</em></h2><p>Make a tiny mess, or ask the bench what to build next.</p></div><div class="launchpad-console"><div class="launchpad-output"><span class="launchpad-label">Bench note</span><strong data-lab-output>Interfaces are invitations.</strong><span data-lab-count>Ready when you are.</span></div><div class="launchpad-actions"><button class="lab-button" data-lab-spark type="button">Make a glitch <span aria-hidden="true">✦</span></button><button class="lab-button lab-button-quiet" data-lab-prompt type="button">Give me a prompt <span aria-hidden="true">↗</span></button></div></div></section>
+
+      <section class="experiment" aria-labelledby="signal-title">
+        <div class="experiment-label"><span>01</span><span>Motion / Signal</span></div>
+        <div class="experiment-body"><div class="experiment-copy"><p class="eyebrow">Oscilloscope</p><h2 id="signal-title">Send a<br><em>signal.</em></h2><p>Replay a 1.1-second CSS trace. The counter records clicks for this page view.</p><div class="lab-readout">Pulses received<strong id="pulse-count">00</strong></div><button class="lab-button" id="pulse-button" type="button">Trigger pulse <span aria-hidden="true">↗</span></button></div><div class="signal-canvas" aria-label="Animated signal visualization"><div class="pulse-line" id="pulse-line"></div></div></div>
+      </section>
+
+      <section class="experiment" aria-labelledby="color-title">
+        <div class="experiment-label"><span>02</span><span>Light / Color</span></div>
+        <div class="experiment-body color-body"><div class="experiment-copy"><p class="eyebrow">Color mixer</p><h2 id="color-title">Find your<br><em>frequency.</em></h2><p>Move the sliders and make a color that feels like yours. Copy the result when it clicks.</p><div class="color-readout"><span id="color-swatch" aria-hidden="true"></span><strong id="color-value">#D9F05B</strong><button class="copy-button" id="copy-color" type="button">Copy code</button></div></div><div class="color-controls"><label for="hue-slider">Hue <output id="hue-value">68°</output></label><input id="hue-slider" type="range" min="0" max="360" value="68"><label for="saturation-slider">Saturation <output id="saturation-value">83%</output></label><input id="saturation-slider" type="range" min="0" max="100" value="83"><label for="lightness-slider">Lightness <output id="lightness-value">65%</output></label><input id="lightness-slider" type="range" min="0" max="100" value="65"></div></div>
+      </section>
+
+      <section class="experiment" aria-labelledby="reaction-title">
+        <div class="experiment-label"><span>03</span><span>Reflex / Timing</span></div>
+        <div class="experiment-body reaction-body"><div class="experiment-copy"><p class="eyebrow">Reaction timer</p><h2 id="reaction-title">Trust your<br><em>reflexes.</em></h2><p>Start a round, wait through a random 1.2–3.4 second delay, then click when the field changes. Best time lasts for this page view; device and browser latency affect results.</p><div class="lab-readout">Best time<strong id="reaction-best">-- ms</strong></div></div><button class="reaction-field" id="reaction-field" type="button"><span id="reaction-message">Start test</span><small id="reaction-time">Your move</small></button></div>
+      </section>
+    </main>
+
+    <footer class="footer"><div><p class="footer-kicker">Want the full context?</p><a class="footer-email" href="embedded-guide.html">Open the Field Guide <span aria-hidden="true">↗</span></a></div><div class="footer-meta"><span>JS / Lab</span><span><a href="index.html">Home</a> / <a href="journal.html">Journal</a></span></div></footer>
+  </div>
+  <script src="script.js?v=20260926-xmas" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=[removed]" crossorigin="anonymous"></script>
+</body>
+</html>

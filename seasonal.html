@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A seasonal corner of JS Central, updated automatically throughout the year.">
+  <meta name="author" content="JS Central">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://jscentral.org/seasonal.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="JS Central">
+  <meta property="og:title" content="JS Central | Seasonal mode">
+  <meta property="og:description" content="A seasonal corner of JS Central, updated automatically throughout the year.">
+  <meta property="og:url" content="https://jscentral.org/seasonal.html">
+  <meta property="og:image" content="https://jscentral.org/IMG_5258.jpeg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JS Central | Seasonal mode">
+  <meta name="twitter:description" content="Seasonal signals, holiday modes, and music from JS Central.">
+  <meta name="twitter:image" content="https://jscentral.org/IMG_5258.jpeg">
+  <title>JS Central | Seasonal mode</title>
+  <link rel="icon" type="image/jpeg" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20260926-wordmark">
+</head>
+<body>
+  <div class="site-shell">
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="wordmark" href="index.html" aria-label="JS home"><span>J</span>S<span class="wordmark-dot">.</span></a>
+      <div class="nav-links"><a href="index.html#work">Work</a><a href="lab.html">Lab</a><a href="journal.html">Journal</a><a href="legal.html">Legal</a></div>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme"><span class="theme-icon" id="theme-icon" aria-hidden="true">◐</span></button>
+    </nav>
+
+    <main class="seasonal-page" data-seasonal-page>
+      <section class="seasonal-hero" aria-labelledby="seasonal-title">
+        <div>
+          <p class="eyebrow"><span data-season-label>Seasonal mode</span> / <span data-season-year></span></p>
+          <h1 id="seasonal-title"><span data-season-headline>Something is changing.</span><br><em data-season-name>Season by season.</em></h1>
+          <p class="seasonal-intro" data-season-intro>This page changes with the calendar. Come back when the light does.</p>
+        </div>
+        <div class="seasonal-stamp" aria-label="Current season">
+          <span class="seasonal-stamp-label">Current signal</span>
+          <strong data-season-short>NOW</strong>
+          <span data-season-range></span>
+        </div>
+      </section>
+
+      <section class="christmas-countdown" data-christmas-countdown aria-labelledby="christmas-countdown-title" hidden>
+        <div class="countdown-heading">
+          <p class="eyebrow">Next Christmas / <span data-countdown-year></span></p>
+          <h2 id="christmas-countdown-title">The good stuff is<br><em>getting closer.</em></h2>
+        </div>
+        <div class="countdown-clock" aria-live="off" aria-label="Countdown to Christmas">
+          <div class="countdown-unit"><strong data-countdown-days>00</strong><span>Days</span></div>
+          <div class="countdown-unit"><strong data-countdown-hours>00</strong><span>Hours</span></div>
+          <div class="countdown-unit"><strong data-countdown-minutes>00</strong><span>Minutes</span></div>
+          <div class="countdown-unit"><strong data-countdown-seconds>00</strong><span>Seconds</span></div>
+        </div>
+        <p class="countdown-note" data-countdown-note>Until December 25</p>
+      </section>
+
+      <section class="seasonal-player" data-playlist-player aria-labelledby="playlist-title">
+        <div class="seasonal-player-heading">
+          <p class="eyebrow">Soundtrack / <span data-season-event>Summer</span></p>
+          <h2 id="playlist-title">Press play,<br><em>stay awhile.</em></h2>
+          <p>A keyless player for the seasonal playlists. Choose a set, then open the full mix in YouTube Music if the embed gets shy.</p>
+          <label for="playlist-select">Choose a playlist</label>
+          <select id="playlist-select" data-playlist-select aria-label="Choose a seasonal playlist"></select>
+          <a class="text-link" data-playlist-fallback href="https://music.youtube.com/playlist?list=PLLH5-2tbx7Gg&si=3y_vfy-zr15jl140" target="_blank" rel="noopener noreferrer">Open the playlist in YouTube Music ↗</a>
+          <button class="share-button" data-share-page type="button">Share this page</button>
+        </div>
+        <div class="seasonal-player-frame"><iframe data-playlist-frame title="Seasonal YouTube playlist" src="https://www.youtube.com/embed?list=PLLH5-2tbx7Gg&rel=0" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+      </section>
+    </main>
+
+    <footer class="footer"><div><p class="footer-kicker">Keep exploring</p><a class="footer-email" href="index.html">Return home <span aria-hidden="true">↗</span></a></div><div class="footer-meta"><span>JS / Seasonal</span><span><a href="lab.html">Lab</a> / <a href="journal.html">Journal</a></span></div></footer>
+  </div>
+  <script src="script.js?v=20260926-xmas" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=[removed]" crossorigin="anonymous"></script>
+</body>
+</html>
